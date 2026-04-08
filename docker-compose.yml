@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  housekeepingui:
+    build: .
+    container_name: housekeepingui
+    ports:
+      - "8082:80"
+    networks:
+      - housekeeping_network
+    restart: unless-stopped
+
+networks:
+  housekeeping_network:
+    external: true
+    name: housekeeping_network

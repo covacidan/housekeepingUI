@@ -34,7 +34,7 @@ function buildRows(records) {
       totalCald: round3(bucCald + baieCald + srvCald),
     })
   }
-  return rows.reverse()
+  return rows
 }
 
 export default function MonthlyConsumption() {
@@ -53,6 +53,7 @@ export default function MonthlyConsumption() {
   if (error) return <Container><Alert variant="danger">{error}</Alert></Container>
 
   const chartData = rows.map(r => ({ name: r.label, 'Cold (m³)': r.totalRece, 'Hot (m³)': r.totalCald }))
+  const tableRows = [...rows].reverse()
 
   return (
     <Container fluid className="px-4">
@@ -95,7 +96,7 @@ export default function MonthlyConsumption() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((r, i) => (
+            {tableRows.map((r, i) => (
               <tr key={i}>
                 <td className="fw-semibold">{r.label}</td>
                 <td>{r.prev.bucatarieRece}</td><td>{r.curr.bucatarieRece}</td><td className="table-info">{r.bucRece}</td>

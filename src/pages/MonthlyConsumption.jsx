@@ -34,7 +34,7 @@ function buildRows(records) {
       totalCald: round3(bucCald + baieCald + srvCald),
     })
   }
-  return rows
+  return rows.reverse()
 }
 
 export default function MonthlyConsumption() {

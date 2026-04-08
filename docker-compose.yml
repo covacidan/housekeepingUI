@@ -1,16 +1,16 @@
-version: '3.8'
-
+# Standalone compose for UI-only development.
+# Production deployment is handled by housekeepingAPI/docker-compose.yml (combined stack).
 services:
-  housekeepingui:
+  ui:
     build: .
-    container_name: housekeepingui
+    container_name: housekeeping_ui
     ports:
       - "8082:80"
     networks:
-      - housekeeping_network
+      - housekeeping_net
     restart: unless-stopped
 
 networks:
-  housekeeping_network:
+  housekeeping_net:
     external: true
-    name: housekeeping_network
+    name: housekeeping_net

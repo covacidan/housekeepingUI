@@ -21,13 +21,29 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'npm test'
+                sh 'npm test -- --coverage'
             }
         }
 
         stage('Build') {
             steps {
                 sh 'npm run build'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'sonar-scanner -Dsonar.projectKey=housekeeping-ui -Dsonar.projectName="Housekeeping UI" -Dsonar.sources=src -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info'
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 

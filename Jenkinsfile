@@ -34,7 +34,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner -Dsonar.projectKey=housekeeping-ui -Dsonar.projectName="Housekeeping UI" -Dsonar.sources=src -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info'
+                    sh 'sonar-scanner -Dsonar.projectKey=housekeeping-ui -Dsonar.projectName="Housekeeping UI" -Dsonar.sources=src -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.token=$SONAR_AUTH_TOKEN'
                 }
             }
         }

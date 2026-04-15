@@ -13,6 +13,12 @@ pipeline {
             }
         }
 
+        stage('Set Version') {
+            steps {
+                sh "npm version --no-git-tag-version 1.0.${BUILD_NUMBER}"
+            }
+        }
+
         stage('Install') {
             steps {
                 sh 'npm ci'

@@ -41,14 +41,14 @@ export default function AddRecord() {
     try {
       await api.post('/housekeeping/waterIndex', {
         ...form,
-        an: parseInt(form.an),
-        luna: parseInt(form.luna),
-        bucatarieRece: parseFloat(form.bucatarieRece),
-        bucatarieCald: parseFloat(form.bucatarieCald),
-        baieRece: parseFloat(form.baieRece),
-        baieCald: parseFloat(form.baieCald),
-        baieServiciuRece: parseFloat(form.baieServiciuRece),
-        baieServiciuCald: parseFloat(form.baieServiciuCald),
+        an: Number.parseInt(form.an),
+        luna: Number.parseInt(form.luna),
+        bucatarieRece: Number.parseFloat(form.bucatarieRece),
+        bucatarieCald: Number.parseFloat(form.bucatarieCald),
+        baieRece: Number.parseFloat(form.baieRece),
+        baieCald: Number.parseFloat(form.baieCald),
+        baieServiciuRece: Number.parseFloat(form.baieServiciuRece),
+        baieServiciuCald: Number.parseFloat(form.baieServiciuCald),
       })
       setSuccess(`Record for ${MONTHS[form.luna - 1]} ${form.an} saved successfully.`)
     } catch (err) {
@@ -85,7 +85,7 @@ export default function AddRecord() {
                 <Form.Group>
                   <Form.Label>Month</Form.Label>
                   <Form.Select value={form.luna} onChange={e => set('luna', e.target.value)}>
-                    {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
+                    {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
                   </Form.Select>
                 </Form.Group>
               </Col>

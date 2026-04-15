@@ -1,18 +1,16 @@
 import React from 'react'
 import { Navbar, Nav, Container, Button } from 'react-bootstrap'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import keycloak from '../keycloak'
 
 export default function NavBar() {
-  const navigate = useNavigate()
   const location = useLocation()
-  const role = localStorage.getItem('role')
+  const role  = localStorage.getItem('role')
   const email = localStorage.getItem('email')
 
   const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('role')
-    localStorage.removeItem('email')
-    navigate('/login')
+    localStorage.clear()
+    keycloak.logout({ redirectUri: globalThis.location.origin })
   }
 
   return (

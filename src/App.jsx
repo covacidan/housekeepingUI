@@ -1,8 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import PrivateRoute from './components/PrivateRoute'
-import Login from './pages/Login'
 import MonthlyConsumption from './pages/MonthlyConsumption'
 import LastMonthDelta from './pages/LastMonthDelta'
 import AddRecord from './pages/AddRecord'
@@ -17,9 +17,12 @@ function Layout({ children }) {
   )
 }
 
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
 function Home() {
   const role = localStorage.getItem('role')
-  if (!localStorage.getItem('token')) return <Navigate to="/login" replace />
   return <Navigate to={role === 'ADMIN' ? '/monthly' : '/delta'} replace />
 }
 
@@ -27,7 +30,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/monthly" element={
           <PrivateRoute requiredRole="ADMIN">

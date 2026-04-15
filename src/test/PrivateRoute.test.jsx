@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { vi } from 'vitest'
 import PrivateRoute from '../components/PrivateRoute'
+
+vi.mock('../keycloak', () => ({
+  default: { authenticated: false },
+}))
 
 const Protected = () => <div>Protected Content</div>
 
@@ -26,7 +31,7 @@ const renderWithRoute = (token, role, requiredRole) => {
           }
         />
       </Routes>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 }
 

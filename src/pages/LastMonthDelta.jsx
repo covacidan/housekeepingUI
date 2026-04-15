@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Container, Card, Row, Col, Spinner, Alert, Badge } from 'react-bootstrap'
 import api from '../services/api'
 
@@ -20,6 +21,12 @@ function DeltaCard({ label, rece, cald }) {
       </Card>
     </Col>
   )
+}
+
+DeltaCard.propTypes = {
+  label: PropTypes.string.isRequired,
+  rece: PropTypes.number.isRequired,
+  cald: PropTypes.number.isRequired,
 }
 
 export default function LastMonthDelta() {

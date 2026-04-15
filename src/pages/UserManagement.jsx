@@ -41,7 +41,7 @@ export default function UserManagement() {
   }
 
   const handleDelete = async (id, email) => {
-    if (!window.confirm(`Delete user ${email}?`)) return
+    if (!globalThis.confirm(`Delete user ${email}?`)) return
     try {
       await api.delete(`/auth/users/${id}`)
       setUsers(u => u.filter(x => x.id !== id))

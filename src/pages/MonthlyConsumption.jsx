@@ -14,7 +14,7 @@ function round3(v) {
 
 function buildRows(records) {
   const sorted = [...records].sort((a, b) =>
-    a.an !== b.an ? a.an - b.an : a.luna - b.luna
+    a.an === b.an ? a.luna - b.luna : a.an - b.an
   )
   const rows = []
   for (let i = 1; i < sorted.length; i++) {
@@ -96,8 +96,8 @@ export default function MonthlyConsumption() {
             </tr>
           </thead>
           <tbody>
-            {tableRows.map((r, i) => (
-              <tr key={i}>
+            {tableRows.map((r) => (
+              <tr key={r.label}>
                 <td className="fw-semibold">{r.label}</td>
                 <td>{r.prev.bucatarieRece}</td><td>{r.curr.bucatarieRece}</td><td className="table-info">{r.bucRece}</td>
                 <td>{r.prev.bucatarieCald}</td><td>{r.curr.bucatarieCald}</td><td className="table-warning">{r.bucCald}</td>

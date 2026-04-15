@@ -4,12 +4,16 @@ import App from './App'
 import keycloak from './keycloak'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-keycloak
-  .init({ onLoad: 'login-required', pkceMethod: 'S256', checkLoginIframe: false })
-  .then((authenticated) => {
-    if (!authenticated) return
+try {
+  const authenticated = await keycloak.init({
+    onLoad: 'login-required',
+    pkceMethod: 'S256',
+    checkLoginIframe: false,
+  })
 
-    const role = keycloak.realmAccess?.roles?.find((r) => r === 'ADMIN' || r === 'RECORDER') ?? ''
+  if (authenticated) {
+    const role =
+      keycloak.realmAccess?.roles?.find((r) => r === 'ADMIN' || r === 'RECORDER') ?? ''
     const email =
       keycloak.tokenParsed?.email ??
       keycloak.tokenParsed?.preferred_username ??
@@ -19,11 +23,13 @@ keycloak
     localStorage.setItem('role', role)
     localStorage.setItem('email', email)
 
-    keycloak.onTokenExpired = () => {
-      keycloak
-        .updateToken(30)
-        .then(() => localStorage.setItem('token', keycloak.token))
-        .catch(() => keycloak.logout())
+    keycloak.onTokenExpired = async () => {
+      try {
+        await keycloak.updateToken(30)
+        localStorage.setItem('token', keycloak.token)
+      } catch {
+        keycloak.logout()
+      }
     }
 
     keycloak.onAuthRefreshSuccess = () => {
@@ -35,5 +41,7 @@ keycloak
         <App />
       </React.StrictMode>,
     )
-  })
-  .catch((err) => console.error('Keycloak init error', err))
+  }
+} catch (err) {
+  console.error('Keycloak init error', err)
+}

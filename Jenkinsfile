@@ -53,14 +53,16 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                // UI is a static Nginx container — no secrets needed.
+                // Stop the old container and start the new image.
                 sh """
                     docker stop ${CONTAINER_NAME} 2>/dev/null || true
-                    docker rm ${CONTAINER_NAME} 2>/dev/null || true
-                    docker run -d \\
-                        --name ${CONTAINER_NAME} \\
-                        --network housekeeping_net \\
-                        --restart unless-stopped \\
-                        -p 8082:80 \\
+                    docker rm   ${CONTAINER_NAME} 2>/dev/null || true
+                    docker run -d \
+                        --name ${CONTAINER_NAME} \
+                        --network housekeeping_net \
+                        --restart unless-stopped \
+                        -p 8082:80 \
                         ${IMAGE_NAME}:latest
                 """
             }

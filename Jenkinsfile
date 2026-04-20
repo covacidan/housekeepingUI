@@ -39,8 +39,25 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "sonar-scanner -Dsonar.projectKey=housekeeping-ui -Dsonar.projectName=\"Housekeeping UI\" -Dsonar.projectVersion=1.0.${BUILD_NUMBER} -Dsonar.sources=src -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.token=\$SONAR_AUTH_TOKEN -Dsonar.qualitygate.wait=true"
+                withVault(
+                    configuration: [vaultCredentialId: 'vault-approle'],
+                    vaultSecrets: [[
+                        path: 'kv/housekeeping/sonarqube', engineVersion: 2,
+                        secretValues: [[envVar: 'SONAR_TOKEN', vaultKey: 'token']]
+                    ]]
+                ) {
+                    withSonarQubeEnv('SonarQube') {
+                        sh """
+                            sonar-scanner \
+                                -Dsonar.projectKey=housekeeping-ui \
+                                "-Dsonar.projectName=Housekeeping UI" \
+                                -Dsonar.projectVersion=1.0.${BUILD_NUMBER} \
+                                -Dsonar.sources=src \
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                                -Dsonar.token=\${SONAR_TOKEN} \
+                                -Dsonar.qualitygate.wait=true
+                        """
+                    }
                 }
             }
         }

@@ -27,12 +27,13 @@ jobs:
         run: npm test -- --coverage --reporter=verbose
 
       - name: SonarCloud analysis
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.sources=src
+            -Dsonar.exclusions=src/test/**
             -Dsonar.tests=src/test
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
         env:
